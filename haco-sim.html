@@ -140,7 +140,11 @@ footer span:last-child{font-family:var(--f-latin);letter-spacing:.2em}
 .util th:first-child,.util td:first-child{text-align:left}
 .util td.pick{cursor:pointer}
 .util .col-on{background:var(--peach)}
-.util tr.big td{font:300 22px var(--f-latin);font-variant-numeric:tabular-nums;color:var(--ink)}
+#utilTables{display:grid;gap:14px}
+.util{table-layout:fixed}
+.util th:first-child{width:22%}
+.seg button{font-size:11px;padding:6px 2px;white-space:nowrap}
+.util tr.big td{font:300 19px var(--f-latin);font-variant-numeric:tabular-nums;color:var(--ink)}
 .util tr.big td.col-on{color:var(--accent)}
 .util .radio{font-size:11.5px;border:1px solid var(--rule);border-radius:99px;padding:3px 12px;background:var(--bg);color:var(--mute);cursor:pointer}
 .util .radio[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--peach)}
@@ -182,22 +186,14 @@ img{max-width:100%}
       <div class="seg" role="group">
         <button id="d30" data-d="30" aria-pressed="false" data-t="d30"></button>
         <button id="d26" data-d="26" aria-pressed="true" data-t="d26"></button>
+        <button id="d22" data-d="22" aria-pressed="false" data-t="d22"></button>
       </div><div class="hint" id="dayshint"></div></div>
   </div>
 
   <div class="premise"><span data-t="rate1"></span> <input class="pin" id="rate" inputmode="decimal" value="8.45" aria-label="rate"> <span data-t="rate2"></span></div>
 
   <div class="sec"><b>SEAT</b><span data-t="seatSub"></span></div>
-  <div class="tblwrap">
-    <table class="util">
-      <thead><tr><th data-t="util"></th><th id="h60"></th><th id="h70"></th><th id="h80"></th></tr></thead>
-      <tbody>
-        <tr><td data-t="custDay"></td><td class="num" id="c60"></td><td class="num" id="c70"></td><td class="num" id="c80"></td></tr>
-        <tr><td data-t="salesDay"></td><td class="num" id="y60"></td><td class="num" id="y70"></td><td class="num" id="y80"></td></tr>
-        <tr class="big"><td style="font:500 13px var(--f-ja)" data-t="salesMonth"></td><td id="m60"></td><td id="m70"></td><td id="m80"></td></tr>
-      </tbody>
-    </table>
-  </div>
+  <div id="utilTables"></div>
   <div class="premise"><span data-t="prem1"></span> <input class="pin" id="ttime" inputmode="decimal" value="2" aria-label="time"> <span data-t="prem2"></span></div>
 
   <div class="sec"><b>RESULT</b><span><span data-t="resultSub"></span> <span class="num" id="k-sales"></span>（<span id="k-sales-s"></span>）</span></div>
@@ -227,7 +223,7 @@ const T={
 ja:{docsub:"ブランドライセンス出店用 / 税別概算",h1:"ヘアサロン 出店収支シミュレーション（月）",
 lead:"家賃・席数・客単価・営業時間を入れると、1席の売上目安と月の収支が出ます。加盟店目安は営業利益10%を確保する配分です。",
 inputSub:"ピンクの枠に入力",rate1:"為替レート 1円 =",rate2:"ウォン ／ 日本語は円、韓国語はウォンで表示され、切り替えるとこのレートで換算されます",rent:"家賃（月）",rentHint:"共益費込み",seats:"席数",seatU:"席",seatsHint:"セット面の数",price:"客単価",priceHint:"税別",
-hours:"営業時間",hourU:"時間",hoursHint:"1日あたり",days:"営業日",d30:"無休",d26:"週1定休",dayN:"月{n}日",
+hours:"営業時間",hourU:"時間",hoursHint:"1日あたり",days:"営業日",d30:"無休",d26:"週1定休",d22:"週2定休",dayN:"月{n}日",
 seatSub:"1席の売上目安 ／ 使う稼働率を選んでください",util:"稼働率",custDay:"1席1日の客数",salesDay:"1席1日の売上",salesMonth:"1席の月売上",person:"人",
 prem1:"1人あたりの施術時間",prem2:"時間で計算 ／ 稼働率は予約が埋まっている割合",
 resultSub:"月の収支 ／ 月売上",kpiA:"営業利益（自店の数字）",kpiT:"営業利益（加盟店目安どおり）",margin:"利益率",plus:"黒字",minus:"赤字",
@@ -243,7 +239,7 @@ n4:"入力した数字はこのブラウザにだけ保存されます。",foot:
 ko:{docsub:"브랜드 라이선스 출점용 / 부가세 별도 개산",h1:"헤어살롱 출점 수지 시뮬레이션 (월)",
 lead:"임대료·좌석 수·객단가·영업시간을 입력하면 좌석당 매출 기준과 월 수지가 계산됩니다. 가맹점 기준은 영업이익 10%를 확보하는 배분입니다.",
 inputSub:"분홍색 칸에 입력",rate1:"환율 1엔 =",rate2:"원 / 일본어는 엔, 한국어는 원으로 표시되며 전환하면 이 환율로 환산됩니다",rent:"임대료 (월)",rentHint:"관리비 포함",seats:"좌석 수",seatU:"석",seatsHint:"시술 의자 수",price:"객단가",priceHint:"부가세 별도",
-hours:"영업시간",hourU:"시간",hoursHint:"1일 기준",days:"영업일",d30:"연중무휴",d26:"주 1회 휴무",dayN:"월 {n}일",
+hours:"영업시간",hourU:"시간",hoursHint:"1일 기준",days:"영업일",d30:"연중무휴",d26:"주 1회 휴무",d22:"주 2회 휴무",dayN:"월 {n}일",
 seatSub:"좌석당 매출 기준 / 사용할 가동률을 선택하세요",util:"가동률",custDay:"좌석당 1일 고객 수",salesDay:"좌석당 1일 매출",salesMonth:"좌석당 월 매출",person:"명",
 prem1:"1인당 시술 시간",prem2:"시간으로 계산 / 가동률은 예약이 차 있는 비율",
 resultSub:"월 수지 / 월 매출",kpiA:"영업이익 (우리 매장 수치)",kpiT:"영업이익 (가맹점 기준대로)",margin:"이익률",plus:"흑자",minus:"적자",
@@ -258,7 +254,7 @@ n3:"대출 상환금은 경비에 넣지 않고 영업이익에서 지불합니�
 n4:"입력한 수치는 이 브라우저에만 저장됩니다.",foot:"가맹 검토용 참고 자료 (실제 수지를 보장하지 않습니다)"}};
 const EN=["Staff","Materials","Retail stock","Marketing","Utilities","Fixed","Sundries","","Education","Other"];
 const PCT=[48,9,1,7,2,1,1,5,2,1];
-const RENT_PCT=10,UTILS=[60,70,80];
+const RENT_PCT=10,UTILS=[20,30,40,50,60,70,80,90];
 let CURR="jpy";
 let LANG="ja",DAYS=26,UTIL=70,MODE={};
 const $=id=>document.getElementById(id);
@@ -298,10 +294,13 @@ function setDiff(id,d,inv){const e=$(id);if(d===null){e.textContent="—";e.clas
   const bad=inv?d<-0.05:d>0.05,good=inv?d>0.05:d<-0.05;e.textContent=pt(d);e.className="diff num"+(bad?" ng":good?" ok":"")}
 function seat(){
   const h=num($("hours").value),p=num($("price").value),tt=num($("ttime").value);const out={};
-  UTILS.forEach(u=>{const c=tt?h/tt*u/100:0,d=c*p,m=d*DAYS;out[u]=m;
-    $("h"+u).innerHTML=`<button class="radio" data-u="${u}" aria-pressed="${u===UTIL}">${u}%</button>`;
-    $("c"+u).textContent=(Math.round(c*10)/10).toFixed(1)+t("person");$("y"+u).textContent=yen(d);$("m"+u).textContent=yen(m);
-    ["h","c","y","m"].forEach(k=>$(k+u).classList.toggle("col-on",u===UTIL))});
+  const cell=u=>{const c=tt?h/tt*u/100:0,d=c*p;out[u]=d*DAYS;return{c,d,m:d*DAYS}};
+  const tbl=us=>{const v=us.map(cell);const on=u=>u===UTIL?' class="col-on"':'';
+    return `<div class="tblwrap"><table class="util"><thead><tr><th>${t("util")}</th>${us.map(u=>`<th${on(u)}><button class="radio" data-u="${u}" aria-pressed="${u===UTIL}">${u}%</button></th>`).join("")}</tr></thead><tbody>
+    <tr><td>${t("custDay")}</td>${us.map((u,i)=>`<td class="num${u===UTIL?" col-on":""}">${(Math.round(v[i].c*10)/10).toFixed(1)}${t("person")}</td>`).join("")}</tr>
+    <tr><td>${t("salesDay")}</td>${us.map((u,i)=>`<td class="num${u===UTIL?" col-on":""}">${yen(v[i].d)}</td>`).join("")}</tr>
+    <tr class="big"><td style="font:500 13px var(--f-ja)">${t("salesMonth")}</td>${us.map((u,i)=>`<td${on(u)}>${yen(v[i].m)}</td>`).join("")}</tr></tbody></table></div>`};
+  $("utilTables").innerHTML=tbl(UTILS.slice(0,4))+tbl(UTILS.slice(4));
   document.querySelectorAll(".radio").forEach(b=>b.addEventListener("click",()=>{UTIL=+b.dataset.u;calc();save()}));
   return out[UTIL];
 }
@@ -328,7 +327,7 @@ function calc(){
   const pill=v=>v>=0?`<span class="pill ok">${t("plus")}</span>`:`<span class="pill ng">${t("minus")}</span>`;
   $("k-profit").textContent=yen(aP);$("k-margin").innerHTML=sales?`${t("margin")} ${pf(aP/S*100)}${pill(aP)}`:"—";
   $("k-tprofit").textContent=yen(tP);$("k-tmargin").textContent=sales?`${t("margin")} ${pf(tP/S*100)}`:"—";
-  $("k-sales").textContent=yen(sales);$("k-sales-s").textContent=t("salesS",{s:seats,p:yen(per),u:UTIL,d:t(DAYS===30?"d30":"d26")});
+  $("k-sales").textContent=yen(sales);$("k-sales-s").textContent=t("salesS",{s:seats,p:yen(per),u:UTIL,d:t("d"+DAYS)});
 }
 function setDays(d){DAYS=d;document.querySelectorAll("[data-d]").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.d===d));$("dayshint").textContent=t("dayN",{n:d})}
 function applyText(){
