@@ -120,6 +120,13 @@ tr.sub td{font-size:12.5px;color:var(--mute)}
 .lang{display:flex;width:max-content;border:1px solid var(--rule);border-radius:99px;overflow:hidden;margin-bottom:0}
 .lang button{border:0;background:var(--bg);color:var(--mute);font:500 11px var(--f-latin);letter-spacing:.1em;padding:4px 12px;cursor:pointer}
 .lang button[aria-pressed="true"]{background:var(--peach);color:var(--accent)}
+.plan{display:grid;gap:12px}
+.rec{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--peach);border:1px solid var(--peach-2);border-radius:8px;padding:12px 16px}
+.rec .k{font-size:11.5px;color:var(--mute)}
+.rec .v{font:300 30px var(--f-latin);color:var(--accent);line-height:1.2}
+.rec .s{font-size:11.5px;color:var(--mute)}
+.stage{min-width:520px}
+.stage td{font-size:14px}
 footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:30px;padding-top:12px;border-top:1px solid var(--rule);font-size:10.5px;color:var(--mute)}
 footer span:last-child{font-family:var(--f-latin);letter-spacing:.2em}
 
@@ -196,6 +203,15 @@ img{max-width:100%}
   <div id="utilTables"></div>
   <div class="premise"><span data-t="prem1"></span> <input class="pin" id="ttime" inputmode="decimal" value="2" aria-label="time"> <span data-t="prem2"></span></div>
 
+  <div class="sec"><b>PLAN</b><span data-t="planSub"></span></div>
+  <div class="plan">
+    <div class="rec"><div><div class="k" data-t="recK"></div><div class="v num" id="recSeats"></div><div class="s" id="recS"></div></div><button class="use" id="useRec" data-t="useRec"></button></div>
+    <div class="tblwrap"><table class="stage">
+      <thead><tr><th data-t="stStage"></th><th data-t="util"></th><th id="stSalesH"></th><th data-t="stProfit"></th><th data-t="stJudge"></th></tr></thead>
+      <tbody id="stageRows"></tbody>
+    </table></div>
+  </div>
+
   <div class="sec"><b>RESULT</b><span><span data-t="resultSub"></span> <span class="num" id="k-sales"></span>（<span id="k-sales-s"></span>）</span></div>
   <div class="result" style="grid-template-columns:1fr 1fr">
     <div class="kpi main"><div class="k" data-t="kpiA"></div><div class="v num" id="k-profit"></div><div class="s" id="k-margin"></div></div>
@@ -220,7 +236,7 @@ img{max-width:100%}
 
 <script>
 const T={
-ja:{docsub:"ブランドライセンス出店用 / 税別概算",h1:"ヘアサロン 出店収支シミュレーション（月）",
+ja:{docsub:"ブランドライセンス出店用 / 税別概算",planSub:"席数の目安 ／ 目標の稼働率70%で月売上が家賃の10倍になる席数",recK:"おすすめの席数",recS:"稼働率70%で月売上 {s}（家賃の10倍）に届く席数",useRec:"この席数で計算する",stStage:"段階",stSales:"月売上（{n}席）",stProfit:"営業利益（目安）",stJudge:"チェック",st1:"半年後",st2:"1年後",st3:"目標",j1:"赤字にならない",j2:"利益が出る",j3:"利益10%",ng:"届かない",h1:"ヘアサロン 出店収支シミュレーション（月）",
 lead:"家賃・席数・客単価・営業時間を入れると、1席の売上目安と月の収支が出ます。加盟店目安は営業利益10%を確保する配分です。",
 inputSub:"ピンクの枠に入力",rate1:"為替レート 1円 =",rate2:"ウォン ／ 日本語は円、韓国語はウォンで表示され、切り替えるとこのレートで換算されます",rent:"家賃（月）",rentHint:"共益費込み",seats:"席数",seatU:"席",seatsHint:"セット面の数",price:"客単価",priceHint:"税別",
 hours:"営業時間",hourU:"時間",hoursHint:"1日あたり",days:"営業日",d30:"無休",d26:"週1定休",d22:"週2定休",dayN:"月{n}日",
@@ -236,7 +252,7 @@ n1:"保険料・税金は、雇用なら社会保険などの会社負担を含�
 n2:"ブランドライセンス料は店舗ごとの契約で決まります。初期値は3%なので、契約の料率に書き換えてください。",
 n3:"融資の返済は経費に入れず、営業利益の中から支払います。返済額を引いても手元にお金が残るか確認してください。",
 n4:"入力した数字はこのブラウザにだけ保存されます。",foot:"加盟検討用・参考資料（実際の収支を保証するものではありません）"},
-ko:{docsub:"브랜드 라이선스 출점용 / 부가세 별도 개산",h1:"헤어살롱 출점 수지 시뮬레이션 (월)",
+ko:{docsub:"브랜드 라이선스 출점용 / 부가세 별도 개산",planSub:"좌석 수 기준 / 목표 가동률 70%에서 월 매출이 임대료의 10배가 되는 좌석 수",recK:"추천 좌석 수",recS:"가동률 70%에서 월 매출 {s}(임대료의 10배)에 도달하는 좌석 수",useRec:"이 좌석 수로 계산",stStage:"단계",stSales:"월 매출 ({n}석)",stProfit:"영업이익 (기준)",stJudge:"체크",st1:"6개월 후",st2:"1년 후",st3:"목표",j1:"적자 아님",j2:"이익 발생",j3:"이익 10%",ng:"미달",h1:"헤어살롱 출점 수지 시뮬레이션 (월)",
 lead:"임대료·좌석 수·객단가·영업시간을 입력하면 좌석당 매출 기준과 월 수지가 계산됩니다. 가맹점 기준은 영업이익 10%를 확보하는 배분입니다.",
 inputSub:"분홍색 칸에 입력",rate1:"환율 1엔 =",rate2:"원 / 일본어는 엔, 한국어는 원으로 표시되며 전환하면 이 환율로 환산됩니다",rent:"임대료 (월)",rentHint:"관리비 포함",seats:"좌석 수",seatU:"석",seatsHint:"시술 의자 수",price:"객단가",priceHint:"부가세 별도",
 hours:"영업시간",hourU:"시간",hoursHint:"1일 기준",days:"영업일",d30:"연중무휴",d26:"주 1회 휴무",d22:"주 2회 휴무",dayN:"월 {n}일",
@@ -304,6 +320,17 @@ function seat(){
   document.querySelectorAll(".radio").forEach(b=>b.addEventListener("click",()=>{UTIL=+b.dataset.u;calc();save()}));
   return out[UTIL];
 }
+function plan(){
+  const h=num($("hours").value),p=num($("price").value),tt=num($("ttime").value),rent=num($("rent").value),seats=num($("seats").value),roy=num($("roy").value);
+  const perSeat=u=>tt?h/tt*u/100*p*DAYS:0;
+  const goal=rent*10,ps70=perSeat(70);const rec=ps70?Math.ceil(goal/ps70):0;
+  $("recSeats").textContent=rec?rec+t("seatU"):"—";$("recS").textContent=t("recS",{s:yen(goal)});
+  $("stSalesH").textContent=t("stSales",{n:seats});
+  const vp=PCT.reduce((a,b)=>a+b,0)+roy;
+  const rows=[["st1",35,"j1",0],["st2",55,"j2",0.0001],["st3",70,"j3",0.0999]];
+  $("stageRows").innerHTML=rows.map(([k,u,j,th])=>{const sales=perSeat(u)*seats,pro=sales*(1-vp/100)-rent,ok=sales>0&&pro/sales>=th&&pro>=0;
+    return `<tr><td>${t(k)}</td><td class="num">${u}%</td><td class="num">${yen(sales)}</td><td class="num" style="color:${pro<0?"var(--bad)":"inherit"}">${yen(pro)}</td><td>${ok?`<span class="pill ok">${t(j)}</span>`:`<span class="pill ng">${t(j)}：${t("ng")}</span>`}</td></tr>`}).join("");
+}
 function calc(){
   const per=seat(),seats=num($("seats").value),rent=num($("rent").value),roy=num($("roy").value);
   const sales=seats*per,S=sales||1;let tTot=0,aTot=0,vp=0,filled=0;
@@ -327,6 +354,7 @@ function calc(){
   const pill=v=>v>=0?`<span class="pill ok">${t("plus")}</span>`:`<span class="pill ng">${t("minus")}</span>`;
   $("k-profit").textContent=yen(aP);$("k-margin").innerHTML=sales?`${t("margin")} ${pf(aP/S*100)}${pill(aP)}`:"—";
   $("k-tprofit").textContent=yen(tP);$("k-tmargin").textContent=sales?`${t("margin")} ${pf(tP/S*100)}`:"—";
+  plan();
   $("k-sales").textContent=yen(sales);$("k-sales-s").textContent=t("salesS",{s:seats,p:yen(per),u:UTIL,d:t("d"+DAYS)});
 }
 function setDays(d){DAYS=d;document.querySelectorAll("[data-d]").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.d===d));$("dayshint").textContent=t("dayN",{n:d})}
@@ -351,6 +379,7 @@ document.querySelectorAll("[data-l]").forEach(b=>b.addEventListener("click",()=>
 document.querySelectorAll("[data-d]").forEach(b=>b.addEventListener("click",()=>{setDays(+b.dataset.d);calc();save()}));
 TOP.forEach(id=>{$(id).addEventListener("input",()=>{calc();save()});
   if(id==="rent"||id==="price")$(id).addEventListener("blur",e=>e.target.value=fmt(num(e.target.value)))});
+$("useRec").addEventListener("click",()=>{const n=parseInt($("recSeats").textContent);if(n){$("seats").value=n;calc();save()}});
 $("reset").addEventListener("click",()=>{document.querySelectorAll(".act,.pin[data-i]").forEach(e=>e.value="");MODE={};calc();save()});
 (function init(){const sv=store();
   if(sv.top){TOP.forEach((id,i)=>{if(sv.top[i]!=null)$(id).value=sv.top[i]});DAYS=sv.days||26;UTIL=sv.util||70;MODE=sv.mode||{};CURR=sv.curr||"jpy";LANG=sv.lang||"ja"}
