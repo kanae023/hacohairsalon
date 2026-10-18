@@ -148,6 +148,14 @@ footer span:last-child{font-family:var(--f-latin);letter-spacing:.2em}
 .util td.pick{cursor:pointer}
 .util .col-on{background:var(--peach)}
 #utilTables{display:grid;gap:14px}
+.util.vert{table-layout:auto;min-width:0}
+.util.vert th{font-size:10px;letter-spacing:.02em;white-space:normal;text-align:right;padding:6px 4px}
+.util.vert th:first-child{width:auto;text-align:left}
+.util.vert td{padding:8px 4px;font-size:13px;text-align:right;white-space:nowrap}
+.util.vert td:first-child{text-align:left}
+.util.vert tr.col-on td{background:var(--peach)}
+.util.vert td.mon{font-weight:500}
+.util.vert tr.col-on td.mon{color:var(--accent)}
 .util{table-layout:fixed}
 .util th:first-child{width:22%}
 .seg button{font-size:11px;padding:6px 2px;white-space:nowrap}
@@ -316,7 +324,11 @@ function seat(){
     <tr><td>${t("custDay")}</td>${us.map((u,i)=>`<td class="num${u===UTIL?" col-on":""}">${(Math.round(v[i].c*10)/10).toFixed(1)}${t("person")}</td>`).join("")}</tr>
     <tr><td>${t("salesDay")}</td>${us.map((u,i)=>`<td class="num${u===UTIL?" col-on":""}">${yen(v[i].d)}</td>`).join("")}</tr>
     <tr class="big"><td style="font:500 13px var(--f-ja)">${t("salesMonth")}</td>${us.map((u,i)=>`<td${on(u)}>${yen(v[i].m)}</td>`).join("")}</tr></tbody></table></div>`};
-  $("utilTables").innerHTML=tbl(UTILS.slice(0,4))+tbl(UTILS.slice(4));
+  const narrow=window.matchMedia("(max-width:640px)").matches;
+  if(narrow){const rows=UTILS.map(u=>{const v=cell(u),c=u===UTIL?' class="col-on"':'';
+      return `<tr${c}><td><button class="radio" data-u="${u}" aria-pressed="${u===UTIL}">${u}%</button></td><td class="num">${(Math.round(v.c*10)/10).toFixed(1)}${t("person")}</td><td class="num">${yen(v.d)}</td><td class="num mon">${yen(v.m)}</td></tr>`}).join("");
+    $("utilTables").innerHTML=`<table class="util vert"><thead><tr><th>${t("util")}</th><th>${t("custDay")}</th><th>${t("salesDay")}</th><th>${t("salesMonth")}</th></tr></thead><tbody>${rows}</tbody></table>`;}
+  else $("utilTables").innerHTML=tbl(UTILS.slice(0,4))+tbl(UTILS.slice(4));
   document.querySelectorAll(".radio").forEach(b=>b.addEventListener("click",()=>{UTIL=+b.dataset.u;calc();save()}));
   return out[UTIL];
 }
@@ -385,6 +397,7 @@ $("reset").addEventListener("click",()=>{document.querySelectorAll(".act,.pin[da
   if(sv.top){TOP.forEach((id,i)=>{if(sv.top[i]!=null)$(id).value=sv.top[i]});DAYS=sv.days||26;UTIL=sv.util||70;MODE=sv.mode||{};CURR=sv.curr||"jpy";LANG=sv.lang||"ja"}
   else{$("rent").value=fmt(600000);$("price").value=fmt(10000)}
   applyText();setDays(DAYS);build(sv.top?sv:null);calc()})();
+window.matchMedia("(max-width:640px)").addEventListener("change",()=>calc());
 </script>
 
 </body>
