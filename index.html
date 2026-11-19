@@ -2807,5 +2807,24 @@ document.querySelectorAll('.lang-option').forEach(opt => {
 })();
 </script>
 
+<script>
+/* book_click: Phorestの予約リンクのクリックを店舗別にGA4へ送る */
+document.addEventListener('click', function (e) {
+  var a = e.target.closest && e.target.closest('a[href*="phorest.com"]');
+  if (!a || typeof gtag !== 'function') return;
+  var href = a.getAttribute('href') || '';
+  var salon = /hoxton/i.test(href) ? 'hoxton' : (/shoreditch/i.test(href) ? 'shoreditch' : 'other');
+  var place = a.classList.contains('hero-book-btn') ? 'hero'
+    : a.classList.contains('mobile-menu-link') ? 'mobile_menu'
+    : a.classList.contains('booking-item') ? 'booking_section'
+    : (a.closest('nav, header') ? 'nav' : 'page');
+  gtag('event', 'book_click', {
+    salon: salon,
+    link_location: place,
+    link_url: href,
+    transport_type: 'beacon'
+  });
+}, true);
+</script>
 </body>
 </html>
